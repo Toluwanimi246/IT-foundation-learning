@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="./output.css" rel="stylesheet">
+  
+</head>
+<body class="bg-gray-600 flex justify-center items-center min-h-screen p-5">
+    <div class="w-[60%] max-w-3xl rounded-2xl overflow-hidden shadow-lg bg-yellow-100 p-3 flex flex-wrap lg:flex-row m-10">
+        <div id="text" class=" flex flex-col p-5 font-sans w-full lg:w-1/2">
+            <div id="info" class=" mb-5">
+                <h1 class="font-bold text-3xl text-yellow-900">Stay Updated!</h1>
+                <p class="text-lg text-red-900">Join 60000+ foodies recieving monthly updates on:</p>
+                    <ul class=" space-y-2 mt-3">
+                        <li class="before:content-['🍕'] before:mr-1 text-lg text-red-900">New recepies from around the world</li>
+                        <li class="before:content-['🍕'] before:mr-2 text-lg text-red-900">5-star restaurants in their areas</li>
+                        <li class="before:content-['🍕'] before:mr-2 text-lg text-red-900">And much more!</li>
+                    </ul>
+            </div>
+            <div id="form">
+                <form class="flex flex-col space-y-3">
+                    <label class="font-bold text-xs text-yellow-900" for="email">Email address</label>
+                    <input class="border-black border rounded bg-white h-10" type="email" name="email" id="email" required><br>
+                    <input class="cursor-pointer border-black border rounded h-10 bg-yellow-200 text-yellow-900 hover:bg-blue-200" type="submit" value="Subscribe to monthly newsletter" id="Submit">
+                </form>
+            </div>
+        </div>
+
+        <div id="image" class=" w-full lg:w-1/2 flex p-5 order-last justify-items-center">
+            <img class="w-full max-w-sm h-auto rounded-2xl object-cover" src="C:\Users\Toluwanimi\Downloads\a676d43c-d09e-4003-902c-24b78e8b0216.jpg" alt="delicious food">
+        </div>
+    </div>
+
+    <div id="myModal" class="hidden fixed w-full h-full bg-black/50">
+        <div class="relative w-[80%] bg-white m-auto p-0 border border-gray-400 w-4/5 shadow-md justify-items-center rounded-2xl shadow-gray-400">
+            <span id="span" class="text-gray-400 float-right text-2xl font-bold hover:text-black focus:text-black focus:outline-none">&times;</span>
+            <h1 class="font-bold text-3xl text-yellow-900 justify-items-center">Awesome!</h1>
+            <p class="text-lg text-red-900 justify-items-center">Thanks for subscribing</p>
+          </div>
+    </div>
+
+    <script>
+        var modal = document.getElementById("myModal");
+        var button = document.getElementById("Submit");
+        var span = document.getElementById("span");
+        var email = document.getElementById("email");
+
+        button.onclick = function() {
+            event.preventDefault();
+            var emailInput = email.value.trim();
+            if(emailInput !== ""){
+      modal.style.display = "block";
+    } else {
+            alert("Please enter your email.");
+        }
+    }
+
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+    
+      </script>
+</body>
+</html>
