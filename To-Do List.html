@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+</head>
+<body class="justify-items-center bg-[url('./flowers.jpg')] bg-contains p-6 h-screen">
+    <script>
+        window.onload = function(){
+            var submittedName = localStorage.getItem("submittedName");
+            document.getElementById("listNameText").innerHTML = submittedName;
+        }
+        function addTask(event){
+            event.preventDefault();
+            var newTask = document.getElementById("Task").value;
+            if (newTask === "") return;
+
+            var list = document.querySelector("ul");
+            var listItem = document.createElement("li");
+
+            listItem.textContent = newTask;
+            listItem.className = "cursor-pointer p-1 hover:bg-blue-300";
+            var dropdownMenu1 = document.createElement("div");
+
+            listItem.appendChild(dropdownMenu1);
+            list.appendChild(listItem);
+
+            dropdownMenu1.className = "hidden absolute left-0 mt-2 bg-white border shadow-lg rounded-md w-24";
+
+            dropdownMenu1.innerHTML = `
+                <button class="block w-full text-left px-3 py-2 hover:bg-gray-100" onclick="editTask(this)">Edit</button>
+                <button class="block w-full text-left px-3 py-2 hover:bg-gray-100" onclick="deleteTask(this)">Delete</button>
+                <button class="block w-full text-left px-3 py-2 hover:bg-gray-100" onclick="FinishTask(this)">Finish</button>
+            `;
+
+            listItem.onclick = function(event) {
+                event.stopPropagation();
+                closeAllDropdowns(); 
+                dropdownMenu1.classList.toggle("hidden");
+            };
+
+            localStorage.setItem("aTask", newTask);
+            document.getElementById("Task").value = "";
+
+            function deleteTask(button) {
+                button.parentElement.parentElement.remove();
+            }
+
+            document.addEventListener("click", function() {
+                closeAllDropdowns();
+            });
+
+            function closeAllDropdowns() {
+                document.querySelectorAll("#taskList div").forEach(menu => menu.classList.add("hidden"));
+            }
+
+            function FinishTask(button) {
+                button.parentElement.parentElement.remove();
+            }
+
+            function editTask(button) {
+                var taskText = button.parentElement.parentElement.querySelector("span");
+                var newText = prompt("Edit task:", taskText.textContent);
+                if (newText !== null) taskText.textContent = newText;
+            }
+        }
+    </script>
+
+    <div id="contains2" class="p-5 rounded-2xl w-4/5 h-[80%] bg-fuchsia-100 border-2 border-b-fuchsia-300">
+        <div id="listName" class="justify-items-center h-[10%] border-2 border-blue-200 bg-blue-200 rounded items-center">
+            <p id="listNameText" class="text-3xl text-blue-900 font-semibold font-sans"></p>
+        </div>
+        <div id="form" class="h-[20%] border-2 border-fuchsia-100">
+            <form onsubmit="addTask(event)">
+                <div class="">
+                    <label class="font-bold text-sm text-blue-900" for="Task">Add a new task</label><br>
+                    <input class="h-8 w-[30%]" type="text" required id="Task" name="Task">
+                    <button class="h-10 w-[15%] rounded text-blue-900 hover:bg-fuchsia-400 p-1.5 border-2 border-fuchsia-400 bg-fuchsia-300" type="submit" id="newTask">Add</button>
+                </div>
+            </form>
+        </div>
+        <div id="list" class="h-[70%] w-[60%] border-2 border-blue-200 bg-blue-200 rounded">
+            <p class="text-2xl text-blue-900 font-semibold font-sans p-2 underline">Tasks</p>
+            <div class="max-h-40 overflow-y-auto p-1 mt-1.5 w-full">
+                <ul id="taskList"></ul>
+            
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

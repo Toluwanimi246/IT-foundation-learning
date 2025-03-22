@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>  
+</head>
+<body class="justify-items-center items-center bg-[url('./flowers.jpg')] bg-contains p-6">
+<script>
+function submitForm(event) {
+            event.preventDefault(); 
+            var inputText = document.getElementById("Name").value;
+            
+            localStorage.setItem("submittedName", inputText);
+            
+            window.location.href = "C:/Users/Toluwanimi/Desktop/Code/CSS Card Component/TDList/To-Do List.html";
+            }
+</script>
+
+    <div id="contains" class="p-8 rounded-2xl w-3/5 bg-fuchsia-100 border-2 border-b-fuchsia-300">
+        <div id="text" class="justify-items-center m-3">
+            <h1 class="text-5xl text-blue-900 font-bold font-sans">To-Do List</h1>
+        </div>
+        <div id="form" class="justify-items-center m-3 p-3">
+            <form onsubmit="submitForm(event)">
+                <div class="space-y-1 justify-items-center">
+                    <label class="font-bold text-sm text-blue-900" for="Name">Name your to-do list</label><br>
+                    <input class="h-8" type="text" required id="Name" name="Name"><br>
+                    <button class="h-10 w-[183px] rounded text-blue-900 hover:bg-fuchsia-400 p-1.5 border-2 border-fuchsia-400 bg-fuchsia-300" type="submit" id="Submit">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
