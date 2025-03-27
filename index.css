@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  font-family: "Quicksand";
+  color: #333;
+}
+.form-body {
+  max-width: 35%;
+  margin: 0 auto;
+  text-align: center;
+  background-color: #ecfffc;
+  border-radius: 8px;
+  box-shadow: 1px 3px 5px rgba(0,0,0,0.1);
+}
+.form-body label {
+  text-align: left;
+  display: flex;
+  padding: 3px 10px;
+  font-weight: bold;
+}
+.contains h2 {
+  font-size: 30px;
+  color: #016fbd;
+  margin-bottom: 15px;
+  text-align: center;
+}
+.form-body input, .form-body textarea, .form-body select {
+  width: 80%;
+  padding: 6px 10px;
+  margin: 3px 4px;
+  border: 1px solid #016fbd;
+  box-sizing: border-box;
+  display: flex;
+  border-radius: 8px;
+}
+.form-body button {
+  background: #016fbd;
+  color: #fff;
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 7px 4px;
+}
+
+.info-sheet{
+  max-width: 35%;
+  height: 100%;
+  margin: 20px auto;
+  text-align: center;
+  background-color: #ecfffc;
+  border-radius: 8px;
+  box-shadow: 1px 3px 5px rgba(0,0,0,0.1);
+}
+.info-sheet h2{
+  font-size: 20px;
+  margin-bottom: 15px;
+  text-align: center;
+  margin: 20px auto;
+}
+ .Name{
+  color: #f6fffe;
+  height: 20%;
+  border: 2px;
+  margin: 20px auto;
+font-size: 40px;
+}
+.info-sheet >.bio{
+height: 65%;
+margin: 20px 5px;
+background-color: rgb(247, 254, 252);
+}
+.info-sheet > .contact{
+  height: 15%;
+  margin: 20px auto;
+}
+.info-sheet button{
+  background: #016fbd;
+  color: #fff;
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 7px 4px;
+}
+#lab{
+  font-weight: bold;
+}
