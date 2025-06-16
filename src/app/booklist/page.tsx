@@ -14,7 +14,7 @@ const router = useRouter();
      useEffect(() => {
     const user = localStorage.getItem("user");
     if (!user) {
-      router.push("/login");
+      router.push("/");
     }
   }, []);
 
@@ -40,7 +40,7 @@ const router = useRouter();
 
   return (
     
-    <div className="w-[90%] p-3 bg-blue-100 flex flex-row space-x-1 rounded mb-3.5 border">
+    <div className="w-[90%] p-3 bg-blue-50 flex flex-row space-x-1 rounded mb-3.5 border">
       <div className="w-[50%]">
         <h1 className="text-2xl font-bold mb-4 sticky">Library Books</h1>
         <select

@@ -2,6 +2,8 @@
 import bcrypt from "bcryptjs";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
+import bgLibarian from "../../public/background.jpg"
+import { handleClientScriptLoad } from "next/script";
 
 type User = {
   email: string;
@@ -53,81 +55,106 @@ export default function Home() {
 
       localStorage.setItem("user", JSON.stringify(user));
       alert("Login successful!");
-      router.push("/books");
+
+       if(userType === "Regular") router.push('/booklist-admin');
+      else router.push("/booklist");
+      
     } catch (error) {
       alert("Login failed. Please check your credentials.");
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center bg-blue-200 m-3 p-2 shadow">
-      <div className="w-[45%] p-3 text-center">
-        <p className="text-5xl font-bold">Library Management System</p>
+    <div className="flex flex-col md:flex-row w-full h-screen overflow-hidden">
+ 
+<div
+  className="w-full md:block md:w-1/2 h-64 md:h-full"
+  style={{
+    backgroundImage: `url(${bgLibarian.src})`,
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+  }}
+>
+
+</div>
+    <div className="w-full md:w-1/2 h-screen overflow-y-auto bg-blue-50 flex flex-col items-center justify-center">
+      <div className="w-[85%] p-3 text-center items-center justify-center align-middle">
+        <p className="lg:text-4xl md:text-3xl font-bold text-blue-950">Library Management System</p>
       </div>
 
-      <div className="justify-center items-center flex flex-col">
-        <h1 className="text-4xl">LOGIN</h1>
-        <form className="flex flex-col space-y-2" onSubmit={handleSubmit}>
-          <select
-            value={userType}
-            onChange={(e) => setUserType(e.target.value)}
-            className="border p-2 mb-4 bg-[#b7eeff]"
-            required
-          >
-            
-            <option value="Regular">Regular</option>
-            <option value="Admin">Admin</option>
-          </select>
+      <div className="justify-center items-center flex flex-col p-4 rounded shadow">
+        <h1 className="lg:text-2xl md:text-xl underline p-2">Sign in to your Employee Account</h1>
+        <div className="w-[80%]">
+            <select
+              value={userType}
+              onChange={(e) => setUserType(e.target.value)}
+              className="border p-2 mb-4 bg-[#5a7191] w-full text-white"
+              required
+            >
+              
+              <option value="Regular">Regular</option>
+              <option value="Admin">Admin</option>
+            </select>
+            <form className="flex flex-col space-y-2" onSubmit={handleSubmit}>
+            <label className="text-[14px] font-semibold m-0">Email:</label>
+            <input
+              type="email" 
+              placeholder="Enter your company email"
+              className="border-[#979797] border-1 p-2 w-full bg-blue-50 rounded h-[35px]"
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              >
+            </input>
 
-          <label>Email:</label>
-          <input
-            type="email"
-            className="border p-2 w-full bg-white"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+            <label className="text-[14px] font-semibold m-0">Password:</label>
+            <input
+              type="password" 
+              placeholder="Enter your password"
+              className="border-[#979797] border-1 p-2 w-full bg-blue-50 rounded h-[35px]"
+              onChange={(e) => setPassword(e.target.value)}
+              required>
+            </input>
 
-          <label>Password:</label>
-          <input
-            type="password"
-            className="border p-2 w-full bg-white"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-
-          {userType === 'Admin' && (
-            <>
-              <label>Admin Key:</label>
+            {userType === 'Admin' && (
+                <div>
+                <label className="text-[14px] font-semibold m-0">Admin Key:</label>
               <input
-                type="password"
-                className="border p-2 w-full bg-white"
-                value={adminKey}
+                type="password" 
+                placeholder="Enter your Admin key"
+                className="border-[#979797] border-1 p-2 w-full bg-blue-50 rounded h-[35px]"
                 onChange={(e) => setAdminKey(e.target.value)}
-                required
-              />
-            </>
-          )}
+                required>
+              </input>
+              </div>
+            )}
+          
 
           <button
             type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-900"
-          >
+            className="bg-[#5a7191] text-white px-4 py-2 rounded hover:bg-blue-900"
+            onClick={handleSubmit}
+            >
             Submit
           </button>
         </form>
+          </div>
+
       </div>
 
-      <div className="border m-2 p-2 flex flex-col items-center rounded bg-[#b7eeff]">
-        <h1>Or Sign up here</h1>
-        <button
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-900"
-          onClick={handleSignUp}
-        >
-          Sign Up
-        </button>
-      </div>
+     <div className="m-2">
+        <p>
+            Don't have an account?{" "}
+          <span
+            className="cursor-pointer font-semibold"
+            style={{ color: "#5a7191" }}
+            onClick={handleSignUp}
+            >
+            Sign Up
+          </span>
+        </p>
+        </div>
     </div>
+ </div>
+
   );
 }
