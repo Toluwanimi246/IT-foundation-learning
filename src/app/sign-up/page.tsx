@@ -90,7 +90,8 @@
       else router.push("/booklist-admin");
 
     } else {
-      alert("Failed to create account.");
+      const errorMsg = await res.text(); 
+      alert("Failed to create account: " + errorMsg);
     }
 
 
