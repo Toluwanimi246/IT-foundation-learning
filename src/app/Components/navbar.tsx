@@ -42,10 +42,10 @@ export default function Navbar() {
                 </div>
             </div>
             {showCategory && (<div className="flex flex-row p-3 space-x-12 font-bold border-1 border-black bg-[#e7e7e78c] z-10">
-                <div>Writing</div>
-                <div>Illustration</div>
-                <div>Animation</div>
-                <div>Featured</div>
+                <div className="hover:cursor-pointer" onClick={() => {router.push('/category/writing')}}>Writing</div>
+                <div className="hover:cursor-pointer" onClick={() => {router.push('/category/illustration')}}>Illustration</div>
+                <div className="hover:cursor-pointer" onClick={() => {router.push('/category/animation')}}>Animation</div>
+                <div className="hover:cursor-pointer" onClick={() => {router.push('/category/featured')}}>Featured</div>
             </div>)}
         </div>
     );

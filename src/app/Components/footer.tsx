@@ -1,10 +1,11 @@
 import Link from "next/link";
+import router from "next/router";
 import { BiLogoFacebookCircle, BiLogoInstagram, BiLogoLinkedin } from "react-icons/bi";
 
 export default function Footer() {
 return(
     <div className="grid md:grid-cols-3 gap-10 my-20 pr-12 pt-15 border-t">
-        <div className="text-5xl font-bold pr-20 pl-30 justify-center items-center">
+        <div className="text-5xl font-bold pr-20 pl-30 justify-center items-center hover:cursor-pointer" onClick={() => {router.push('/')}}>
             <h1>Create</h1>
             <h1 className="pl-18">Sphere</h1>
         </div>

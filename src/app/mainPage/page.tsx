@@ -1,23 +1,26 @@
 "use client";
 import { useEffect, useState } from "react";
-import bgLibarian from "../../../public/night_city.jpg"
-import FeaturedPostPreview from "../Components/homePostPreview";
-import PostPreview from "../Components/carouselPostPreview";
+
 import Footer from "../Components/footer";
 import HomePostPreview from "../Components/homePostPreview";
-import CarouselPostPreview from "../Components/carouselPostPreview";
+import Image from "next/image";
+import Carousel from "../Components/postCarousel";
+import RegularPostPreview from "../Components/regularPostPreview";
 
 export default function MainPage() {
   type Post = {
   id: string;
   title: string;
   content: string;
+  category: string;
+  details: string;
   tags: string[];
   imageUrl : string;
 };
 
+  const backendUrl = "https://localhost:44372"; 
   const [posts, setPosts] = useState<Post[]>([]);
-
+   const [visibleCount, setVisibleCount] = useState(3); 
 
   useEffect(() => {
     fetch("https://localhost:44372/api/posts")
@@ -26,7 +29,20 @@ export default function MainPage() {
       .catch((err) => console.error(err));
   }, []);
 
-  
+
+
+  const [singlePost, setSinglePost] = useState<Post | null>(null);
+
+  useEffect(() => {
+    fetch("https://localhost:44372/api/posts/68ac34fc4e1128649b517cf6")
+      .then((res) => res.json())
+      .then((data) => setSinglePost(data))
+      .catch((err) => console.error(err));
+  }, []);
+
+  const handleLoadMore = () => {
+      setVisibleCount((prev) => prev + 3);
+    };
 
   return (
     <div className="flex flex-col">
@@ -37,33 +53,41 @@ export default function MainPage() {
             <h1 className="pl-18">Sphere</h1>
             <h2 className="text-xl p-4 pl-2 font-medium">Art is the soul's communication</h2>
           </div>
+          
           <div>
             <HomePostPreview id="68ac34fc4e1128649b517cf6" />
           </div>
         </div>
-        <div className="w-1/2"
-          style={{
-            backgroundImage: `url(${bgLibarian.src})`,
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-          }}
-        ></div>
+
+        <div className="relative w-1/2 h-[700px]">
+          {singlePost?.imageUrl && (
+            <Image
+                src={`${backendUrl}${singlePost.imageUrl}`}
+                alt={singlePost.title}
+                fill
+                className="object-cover pl-9"
+                unoptimized
+              />
+          )}
+        </div>
       </div>
 
       <div className="mt-8">
         <h1 className="text-5xl py-15 p-5 flex justify-center mt-50 font-semibold">FEATURED POSTS</h1>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-9">
-          {posts.map((post) => (
-            <CarouselPostPreview
-              key={post.id}
-              id={post.id}
-              content = {post.content}
-              title={post.title}
-              imageUrl={post.imageUrl}
-            />
-          ))}
-        </div>
+        <Carousel />
       </div>
+      <div className="my-50 mx-30 mb-5"><RegularPostPreview posts={posts.slice(0, visibleCount)} /></div>
+
+      {visibleCount < posts.length && (
+        <div className="flex justify-center">
+          <button
+            onClick={handleLoadMore}
+            className="px-10 py-4 bg-blue-500 text-white rounded-lg hover:bg-blue-700 text-3xl"
+          >
+            LOAD MORE
+          </button>
+        </div>
+      )}
       <Footer/>
     </div>
   );
