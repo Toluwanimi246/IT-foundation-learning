@@ -12,52 +12,77 @@ type Book = {
   isArchived: boolean;
 };
 
-type User = {
-  email: string;
-  password: string;
-  role: string;
-  adminKey?: string;
-};
 
 function BookList() {
 const router = useRouter();
-     useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (!user) {
-      router.push("/");
-    }
-  }, []);
-
+  const [isAuthorized, setIsAuthorized] = useState(false);
   const [books, setBooks] = useState<Book[]>([]);
   const [sortBy, setSortBy] = useState("");
-
-  useEffect(() => {
-    fetch("https://localhost:44396/api/Books")
-      .then((res) => res.json())
-      .then((data: Book[]) => setBooks(data));
-  }, []);
-const [showArchived, setShowArchived] = useState(false);
-   const archivedBooks = books.filter(book => book.isArchived);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
- const visibleBooks = showArchived
-  ? books.filter(book => book.isArchived)
-  : books.filter(book => !book.isArchived);
+  const [showArchived, setShowArchived] = useState(false);
 
-const sortedBooks = [...visibleBooks].sort((a, b) => {
-  const aVal = sortBy === "title" ? a.title : a.authorId;
-  const bVal = sortBy === "title" ? b.title : b.authorId;
+  // ✅ Role check and data fetch
+  useEffect(() => {
+    const userStr = localStorage.getItem("user");
+    const token = document.cookie
+      .split("; ")
+      .find((c) => c.startsWith("token="))
+      ?.split("=")[1];
 
-  return sortOrder === "asc"
-    ? aVal.localeCompare(bVal)
-    : bVal.localeCompare(aVal);
-});
+    if (!userStr || !token) {
+      alert("You must be logged in to access this page.");
+      router.push("/");
+      return;
+    }
+
+    const user = JSON.parse(userStr);
+    if (user.role !== "Regular") {
+      alert("Access denied. Regular users only.");
+      router.push("/");
+      return;
+    }
+
+    setIsAuthorized(true);
+
+    fetch("https://localhost:44396/api/Books", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(`Failed to fetch books: ${errorText}`);
+        }
+        return res.json();
+      })
+      .then((data: Book[]) => setBooks(data))
+      .catch((error) => {
+        console.error(error);
+        alert("Could not load books. You may be unauthorized.");
+        router.push("/");
+      });
+  }, []);
+
+  const archivedBooks = books.filter((book) => book.isArchived);
+  const visibleBooks = showArchived
+    ? archivedBooks
+    : books.filter((book) => !book.isArchived);
+
+  const sortedBooks = [...visibleBooks].sort((a, b) => {
+    const aVal = sortBy === "title" ? a.title : a.authorId;
+    const bVal = sortBy === "title" ? b.title : b.authorId;
+
+    return sortOrder === "asc"
+      ? aVal.localeCompare(bVal)
+      : bVal.localeCompare(aVal);
+  });
 
   const logOut = () => {
     localStorage.clear();
-    router.push("/")
+    document.cookie = "token=; Max-Age=0; path=/";
+    router.push("/");
   };
-
-
   return (
     <div className="flex flex-col md:flex-row w-full h-screen overflow-hidden">
       <div

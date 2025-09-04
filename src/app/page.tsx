@@ -15,7 +15,7 @@ type User = {
 export default function Home() {
   const router = useRouter();
 
-  const [userType, setUserType] = useState("");
+  const [userType, setUserType] = useState("Regular");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [adminKey, setAdminKey] = useState("");
@@ -25,12 +25,17 @@ export default function Home() {
   };
   
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    try {
-      const res = await fetch(`https://localhost:44396/api/Users/authenticate`, {
-        method: "POST",
+  if (!userType) {
+    alert("Please select a user type.");
+    return;
+  }
+
+  try {
+    const res = await fetch(`https://localhost:44396/api/Users/authenticate`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
@@ -38,28 +43,48 @@ export default function Home() {
         email,
         password,
         adminKey: userType === "Admin" ? adminKey : null,
-        }),
-      });
+      }),
+    });
 
-      if (!res.ok) throw new Error("User not found");
+    const text = await res.text(); // get raw response first
 
-      const user: User = await res.json();
-      if (!res.ok) {
-        const message = await res.text();
-        alert(`Login failed: ${message}`);
-        return;
-      }
-      console.log("Logged in user:", user);
-      localStorage.setItem("user", JSON.stringify(user));
-      alert("Login successful!");
-
-      if(user.role === "Regular") router.push('/booklist');
-      else if (user.role === "Admin") router.push("/booklist-admin");
-      
-    } catch (error) {
-      alert("Login failed. Please check your credentials.");
+    if (!res.ok) {
+      alert(`Login failed: ${text}`);
+      return;
     }
-  };
+
+    let data;
+    try {
+      data = JSON.parse(text); // safely parse
+    } catch (err) {
+      console.error("JSON parsing error:", err);
+      alert("Unexpected response from server.");
+      return;
+    }
+
+    const { token, user } = data || {};
+    if (!token || !user) {
+      alert("Invalid login response.");
+      return;
+    }
+
+    document.cookie = `token=${token}; path=/; secure; samesite=strict`;
+    localStorage.setItem("user", JSON.stringify(user));
+    alert("Login successful!");
+
+    if (user.role === "Regular") {
+      router.push("/booklist");
+    } else if (user.role === "Admin") {
+      router.push("/booklist-admin");
+    }
+
+  } catch (error) {
+    console.error("Login error:", error);
+    alert("Login failed. Please check your credentials.");
+  }
+};
+
+
 
   return (
     <div className="flex flex-col md:flex-row w-full h-screen overflow-hidden">
@@ -134,7 +159,6 @@ export default function Home() {
                 <button
                 type="submit"
                 className="w-full bg-[#5a7191] text-white px-4 py-2 rounded hover:bg-blue-900"
-                onClick={handleSubmit}
                 >
                 Submit
               </button>

@@ -76,15 +76,15 @@
       adminKey: userType === "Admin" ? adminKey : null
     }),
     });
-
+        
     if (res.ok) {
       console.log("This is a response: ");
       setEmail("");
       setPassword("");
       setAdminKey("");
+
       localStorage.setItem("user", JSON.stringify(user));
       alert("Account created successfully!");
-
 
       if(userType === "Regular") router.push('/booklist');
       else router.push("/booklist-admin");
@@ -93,7 +93,6 @@
       const errorMsg = await res.text(); 
       alert("Failed to create account: " + errorMsg);
     }
-
 
   };
 
