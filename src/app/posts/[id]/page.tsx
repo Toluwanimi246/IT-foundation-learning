@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Navbar from "@/app/Components/navbar";
 import Footer from "@/app/Components/footer";
+import Comments from "@/app/Components/comments";
 
 type Post = {
   id: string;
   title: string;
   content: string;
+  details: string;
   imageUrl: string;
 };
 
@@ -51,6 +53,9 @@ export default function PostPage() {
         )}
         </div>
       </div>
+      <div>{post.details}</div>
+      <div><Comments/> </div>
+
     </div>
     <Footer />
     </div>

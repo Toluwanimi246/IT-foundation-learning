@@ -51,7 +51,7 @@ export default function Illustration() {
         <div className="flex justify-center">
           <button
             onClick={handleLoadMore}
-            className="px-10 py-4 bg-blue-500 text-white rounded-lg hover:bg-blue-700 text-3xl"
+            className="px-10 py-4 bg-[#5a7191] text-white rounded-lg hover:bg-blue-700 text-3xl"
           >
             LOAD MORE
           </button>
